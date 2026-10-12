@@ -1,0 +1,14 @@
+{
+  "@context": {"@vocab": "https://w3id.org/edc/v0.0.1/ns/"},
+  "@id": "iot-usine-__N__-live",
+  "properties": {
+    "name": "Flux capteurs temps reel Usine __N__",
+    "contenttype": "text/csv",
+    "owner": "usine-__N__"
+  },
+  "dataAddress": {
+    "type": "HttpData",
+    "name": "live_data.csv",
+    "baseUrl": "http://backend-__N__:8000/data/live/csv"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "@context": {"@vocab": "https://w3id.org/edc/v0.0.1/ns/", "odrl": "http://www.w3.org/ns/odrl/2/"},
+  "@id": "policy-expired",
+  "policy": {
+    "@type": "odrl:Set",
+    "odrl:permission": [{
+      "odrl:action": "use",
+      "odrl:constraint": {
+        "odrl:leftOperand": {"@id": "https://w3id.org/edc/v0.0.1/ns/inForceDate"},
+        "odrl:operator": {"@id": "odrl:lteq"},
+        "odrl:rightOperand": "2020-01-01T00:00:00Z"
+      }
+    }]
+  }
+}
