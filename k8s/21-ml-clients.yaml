@@ -1,0 +1,182 @@
+# =============================================================================
+# Clients ML fédérés (Module 3 — code à venir) — un par usine.
+#
+# Chaque pod :
+#   initContainer : pré-génère 30 jours d'historique LOCALEMENT (emptyDir)
+#   ml-client     : entraîne sur ses données locales, n'envoie au serveur
+#                   Flower que les poids du modèle (FedAvg) — jamais les données.
+#
+# L'image dataspace/ml-client devient buildable dès que
+# services/ml-client/main.py est livré.
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-client-usine-1
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: ml-client
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ml-client
+      usine: usine-1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ml-client
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-1
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_1
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: ml-client
+          image: dataspace/ml-client:latest
+          imagePullPolicy: Never
+          env:
+            - name: USINE_ID
+              value: usine_1
+            - name: DATA_DIR
+              value: /data
+            - name: FLOWER_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: dataspace-config
+                  key: FLOWER_SERVER
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { cpu: "1", memory: 1Gi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-client-usine-2
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: ml-client
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ml-client
+      usine: usine-2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ml-client
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-2
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_2
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: ml-client
+          image: dataspace/ml-client:latest
+          imagePullPolicy: Never
+          env:
+            - name: USINE_ID
+              value: usine_2
+            - name: DATA_DIR
+              value: /data
+            - name: FLOWER_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: dataspace-config
+                  key: FLOWER_SERVER
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { cpu: "1", memory: 1Gi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-client-usine-3
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: ml-client
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ml-client
+      usine: usine-3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ml-client
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-3
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_3
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: ml-client
+          image: dataspace/ml-client:latest
+          imagePullPolicy: Never
+          env:
+            - name: USINE_ID
+              value: usine_3
+            - name: DATA_DIR
+              value: /data
+            - name: FLOWER_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: dataspace-config
+                  key: FLOWER_SERVER
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { cpu: "1", memory: 1Gi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}

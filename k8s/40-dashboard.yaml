@@ -1,0 +1,74 @@
+# =============================================================================
+# Dashboard + API (Module 5 — code à venir).
+# Port 8500 en interne, exposé en NodePort 30080 :
+#   http://<minikube-ip>:30080
+#
+# Reçoit via le ConfigMap dataspace-config les adresses de tout le reste
+# (données live, fédération, connecteurs EDC) — ne stocke aucune donnée.
+#
+# L'image dataspace/dashboard devient buildable dès que
+# services/dashboard/main.py est livré.
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: dashboard
+    app.kubernetes.io/part-of: dataspace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dashboard
+        app.kubernetes.io/part-of: dataspace
+    spec:
+      containers:
+        - name: dashboard
+          image: dataspace/dashboard:latest
+          imagePullPolicy: Never
+          env:
+            - name: SIM_DATA_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: dataspace-config
+                  key: SIM_DATA_URLS
+            - name: FLOWER_STATUS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: dataspace-config
+                  key: FLOWER_STATUS_URL
+            - name: EDC_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: dataspace-config
+                  key: EDC_URLS
+          ports:
+            - name: http
+              containerPort: 8500
+          resources:
+            requests: { cpu: 50m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: dashboard
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: dashboard
+  ports:
+    - name: http
+      port: 8500
+      targetPort: 8500
+      nodePort: 30080

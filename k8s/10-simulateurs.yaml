@@ -1,0 +1,269 @@
+# =============================================================================
+# Simulateurs IoT (Module 1) — un pod par usine, données 100% locales au pod.
+#
+# Chaque pod :
+#   initContainer  : génère 30 jours d'historique dans un volume emptyDir
+#   live-stream    : stream live (relevé toutes les 5 s) — code Module 1 réel
+#   data-server    : sidecar HTTP exposant les CSV (port 8001)
+#
+# Les CSV ne quittent jamais le pod : « les données restent stockées
+# localement », conformément au cahier des charges.
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulateur-usine-1
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: simulateur
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: simulateur
+      usine: usine-1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: simulateur
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-1
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_1
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: live-stream
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "live_stream.py", "--usine", "usine_1"]
+          env:
+            - name: USINE_ID
+              value: usine_1
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { cpu: 500m, memory: 256Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+        - name: data-server
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "serve_data.py"]
+          env:
+            - name: USINE_ID
+              value: usine_1
+          ports:
+            - name: http
+              containerPort: 8001
+          resources:
+            requests: { cpu: 20m, memory: 32Mi }
+            limits: { cpu: 200m, memory: 128Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sim-data-usine-1
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: simulateur
+    usine: usine-1
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: simulateur
+    usine: usine-1
+  ports:
+    - name: http
+      port: 8001
+      targetPort: 8001
+      nodePort: 30001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulateur-usine-2
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: simulateur
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: simulateur
+      usine: usine-2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: simulateur
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-2
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_2
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: live-stream
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "live_stream.py", "--usine", "usine_2"]
+          env:
+            - name: USINE_ID
+              value: usine_2
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { cpu: 500m, memory: 256Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+        - name: data-server
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "serve_data.py"]
+          env:
+            - name: USINE_ID
+              value: usine_2
+          ports:
+            - name: http
+              containerPort: 8001
+          resources:
+            requests: { cpu: 20m, memory: 32Mi }
+            limits: { cpu: 200m, memory: 128Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sim-data-usine-2
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: simulateur
+    usine: usine-2
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: simulateur
+    usine: usine-2
+  ports:
+    - name: http
+      port: 8001
+      targetPort: 8001
+      nodePort: 30002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulateur-usine-3
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: simulateur
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: simulateur
+      usine: usine-3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: simulateur
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-3
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_3
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: live-stream
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "live_stream.py", "--usine", "usine_3"]
+          env:
+            - name: USINE_ID
+              value: usine_3
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { cpu: 500m, memory: 256Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+        - name: data-server
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "serve_data.py"]
+          env:
+            - name: USINE_ID
+              value: usine_3
+          ports:
+            - name: http
+              containerPort: 8001
+          resources:
+            requests: { cpu: 20m, memory: 32Mi }
+            limits: { cpu: 200m, memory: 128Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sim-data-usine-3
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: simulateur
+    usine: usine-3
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: simulateur
+    usine: usine-3
+  ports:
+    - name: http
+      port: 8001
+      targetPort: 8001
+      nodePort: 30003

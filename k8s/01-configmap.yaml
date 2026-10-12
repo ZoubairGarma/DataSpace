@@ -1,0 +1,14 @@
+# Configuration partagée (consommée par le dashboard et les clients ML)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dataspace-config
+  namespace: dataspace
+data:
+  # Adresses des serveurs de données temps réel (une par usine)
+  SIM_DATA_URLS: "http://sim-data-usine-1:8001,http://sim-data-usine-2:8001,http://sim-data-usine-3:8001"
+  # Serveur de fédération Flower (Module 3)
+  FLOWER_SERVER: "flower-server:9090"
+  FLOWER_STATUS_URL: "http://flower-server:8080"
+  # Connecteurs EDC (Module 2) — un par usine
+  EDC_URLS: "http://edc-connector-usine-1:8000,http://edc-connector-usine-2:8000,http://edc-connector-usine-3:8000"

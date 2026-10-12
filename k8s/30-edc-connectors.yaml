@@ -1,0 +1,230 @@
+# =============================================================================
+# Connecteurs EDC (Module 2 — code à venir) — un par usine.
+#
+# Chaque pod :
+#   initContainer : pré-génère 30 jours d'historique localement (emptyDir)
+#   edc-connector : publie/négocie ces données via le Data Space (port 8000)
+#                   endpoints attendus : /catalog /contracts /policies /logs
+#
+# L'image dataspace/edc-connector devient buildable dès que
+# services/edc-connector/main.py est livré.
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edc-connector-usine-1
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: edc-connector
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edc-connector
+      usine: usine-1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: edc-connector
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-1
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_1
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: edc-connector
+          image: dataspace/edc-connector:latest
+          imagePullPolicy: Never
+          env:
+            - name: USINE_ID
+              value: usine_1
+            - name: DATA_DIR
+              value: /data
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests: { cpu: 50m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 512Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edc-connector-usine-1
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: edc-connector
+    usine: usine-1
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: edc-connector
+    usine: usine-1
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edc-connector-usine-2
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: edc-connector
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edc-connector
+      usine: usine-2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: edc-connector
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-2
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_2
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: edc-connector
+          image: dataspace/edc-connector:latest
+          imagePullPolicy: Never
+          env:
+            - name: USINE_ID
+              value: usine_2
+            - name: DATA_DIR
+              value: /data
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests: { cpu: 50m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 512Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edc-connector-usine-2
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: edc-connector
+    usine: usine-2
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: edc-connector
+    usine: usine-2
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edc-connector-usine-3
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: edc-connector
+    app.kubernetes.io/part-of: dataspace
+    usine: usine-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edc-connector
+      usine: usine-3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: edc-connector
+        app.kubernetes.io/part-of: dataspace
+        usine: usine-3
+    spec:
+      initContainers:
+        - name: generer-historique
+          image: dataspace/simulateur:latest
+          imagePullPolicy: Never
+          command: ["python", "generate_one.py"]
+          env:
+            - name: USINE_ID
+              value: usine_3
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /app/data
+      containers:
+        - name: edc-connector
+          image: dataspace/edc-connector:latest
+          imagePullPolicy: Never
+          env:
+            - name: USINE_ID
+              value: usine_3
+            - name: DATA_DIR
+              value: /data
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests: { cpu: 50m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 512Mi }
+          volumeMounts:
+            - name: donnees-usine
+              mountPath: /data
+      volumes:
+        - name: donnees-usine
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edc-connector-usine-3
+  namespace: dataspace
+  labels:
+    app.kubernetes.io/name: edc-connector
+    usine: usine-3
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: edc-connector
+    usine: usine-3
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000

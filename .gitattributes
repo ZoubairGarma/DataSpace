@@ -1,0 +1,8 @@
+# Garantit des fins de ligne LF pour les scripts bash (sinon CRLF sous
+# Windows casse l'exécution) et normalise le reste.
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
