@@ -1,0 +1,75 @@
+name: dataspace
+
+x-connector: &connector
+  image: edc-connector:local
+  restart: unless-stopped
+
+services:
+  backend-1:
+    build: ./backend
+    environment:
+      FACTORY: usine_1
+    volumes:
+      - ../Simulation_Usine/data/usine_1:/data:ro
+    ports:
+      - "18001:8000"
+
+  backend-2:
+    build: ./backend
+    environment:
+      FACTORY: usine_2
+    volumes:
+      - ../Simulation_Usine/data/usine_2:/data:ro
+    ports:
+      - "18002:8000"
+
+  backend-3:
+    build: ./backend
+    environment:
+      FACTORY: usine_3
+    volumes:
+      - ../Simulation_Usine/data/usine_3:/data:ro
+    ports:
+      - "18003:8000"
+
+  connector-1:
+    <<: *connector
+    container_name: connector-1
+    environment:
+      EDC_FS_CONFIG: /config/usine1.properties
+    volumes:
+      - ./config:/config:ro
+    ports:
+      - "19193:19193"
+      - "19194:19194"
+      - "19291:19291"
+    depends_on:
+      - backend-1
+
+  connector-2:
+    <<: *connector
+    container_name: connector-2
+    environment:
+      EDC_FS_CONFIG: /config/usine2.properties
+    volumes:
+      - ./config:/config:ro
+    ports:
+      - "29193:29193"
+      - "29194:29194"
+      - "29291:29291"
+    depends_on:
+      - backend-2
+
+  connector-3:
+    <<: *connector
+    container_name: connector-3
+    environment:
+      EDC_FS_CONFIG: /config/usine3.properties
+    volumes:
+      - ./config:/config:ro
+    ports:
+      - "39193:39193"
+      - "39194:39194"
+      - "39291:39291"
+    depends_on:
+      - backend-3
