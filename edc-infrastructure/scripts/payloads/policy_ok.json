@@ -1,0 +1,10 @@
+{
+  "@context": {"@vocab": "https://w3id.org/edc/v0.0.1/ns/", "odrl": "http://www.w3.org/ns/odrl/2/"},
+  "@id": "policy-ok",
+  "policy": {
+    "@type": "odrl:Set",
+    "odrl:permission": [],
+    "odrl:prohibition": [],
+    "odrl:obligation": []
+  }
+}
