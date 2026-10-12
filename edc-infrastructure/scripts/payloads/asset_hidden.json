@@ -1,0 +1,6 @@
+{
+  "@context": {"@vocab": "https://w3id.org/edc/v0.0.1/ns/"},
+  "@id": "iot-usine-__N__-hidden",
+  "properties": {"name": "Asset sans contract definition (test invisibilite)", "contenttype": "text/csv"},
+  "dataAddress": {"type": "HttpData", "baseUrl": "http://backend-__N__:8000/data/historical/csv"}
+}
