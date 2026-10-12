@@ -1,0 +1,49 @@
+﻿{
+    "participant":  "usine-1",
+    "count":  5,
+    "events":  [
+                   {
+                       "ts":  "2026-10-12T22:35:39.933016+00:00",
+                       "event":  "startup",
+                       "participant":  "usine-1",
+                       "usine":  "usine_1",
+                       "mode":  "builtin"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.039380+00:00",
+                       "event":  "negotiation_finalized",
+                       "participant":  "usine-1",
+                       "provider":  "usine-2",
+                       "asset":  "iot-usine-2-historical",
+                       "agreement":  "ag-7625f1da8ff2",
+                       "reason":  null
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.126498+00:00",
+                       "event":  "transfer_received",
+                       "participant":  "usine-1",
+                       "provider":  "usine-2",
+                       "asset":  "iot-usine-2-historical",
+                       "http_status":  200,
+                       "bytes":  643580
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.168756+00:00",
+                       "event":  "negotiation_terminated",
+                       "participant":  "usine-1",
+                       "provider":  "usine-2",
+                       "asset":  "iot-usine-2-expired",
+                       "agreement":  null,
+                       "reason":  "politique policy-expired expiree le 2020-01-01T00:00:00Z"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.218355+00:00",
+                       "event":  "negotiation_terminated",
+                       "participant":  "usine-1",
+                       "provider":  "usine-2",
+                       "asset":  "iot-usine-2-hidden",
+                       "agreement":  null,
+                       "reason":  "asset non visible dans le catalogue"
+                   }
+               ]
+}

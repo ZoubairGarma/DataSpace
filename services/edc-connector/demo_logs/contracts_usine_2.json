@@ -1,0 +1,16 @@
+﻿{
+    "as_consumer":  [
+
+                    ],
+    "as_provider":  [
+                        {
+                            "agreement_id":  "ag-7625f1da8ff2",
+                            "asset":  "iot-usine-2-historical",
+                            "consumer":  "usine_1",
+                            "policy":  "policy-ok",
+                            "token":  "XpDA1LPZyyat0MaD9ypV92eOx6sR-JtR",
+                            "signed_at":  "2026-10-12T22:35:41.037085+00:00",
+                            "expires_at":  "2026-10-12T23:35:41.037110+00:00"
+                        }
+                    ]
+}

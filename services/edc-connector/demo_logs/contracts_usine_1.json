@@ -1,0 +1,35 @@
+﻿{
+    "as_consumer":  [
+                        {
+                            "negotiation_id":  "neg-5d2658cb",
+                            "provider":  "usine_2",
+                            "asset":  "iot-usine-2-historical",
+                            "started_at":  "2026-10-12T22:35:41.033483+00:00",
+                            "state":  "FINALIZED",
+                            "agreement_id":  "ag-7625f1da8ff2",
+                            "token":  "XpDA1LPZyyat0MaD9ypV92eOx6sR-JtR",
+                            "reason":  null
+                        },
+                        {
+                            "negotiation_id":  "neg-7db0bbfd",
+                            "provider":  "usine_2",
+                            "asset":  "iot-usine-2-expired",
+                            "started_at":  "2026-10-12T22:35:41.165634+00:00",
+                            "state":  "TERMINATED",
+                            "agreement_id":  null,
+                            "token":  null,
+                            "reason":  "politique policy-expired expiree le 2020-01-01T00:00:00Z"
+                        },
+                        {
+                            "negotiation_id":  "neg-f50f743f",
+                            "provider":  "usine_2",
+                            "asset":  "iot-usine-2-hidden",
+                            "started_at":  "2026-10-12T22:35:41.218327+00:00",
+                            "state":  "TERMINATED",
+                            "reason":  "asset non visible dans le catalogue"
+                        }
+                    ],
+    "as_provider":  [
+
+                    ]
+}

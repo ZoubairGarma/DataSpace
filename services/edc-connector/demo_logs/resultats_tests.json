@@ -1,0 +1,22 @@
+﻿[
+    {
+        "Scenario":  "S1 politique valide",
+        "Attendu":  "FINALIZED + transfert",
+        "Obtenu":  "FINALIZED, transfert HTTP 200, 8640 lignes"
+    },
+    {
+        "Scenario":  "S2 politique expiree",
+        "Attendu":  "TERMINATED",
+        "Obtenu":  "TERMINATED : politique policy-expired expiree le 2020-01-01T00:00:00Z"
+    },
+    {
+        "Scenario":  "S3 asset non publie",
+        "Attendu":  "TERMINATED",
+        "Obtenu":  "TERMINATED : asset non visible dans le catalogue"
+    },
+    {
+        "Scenario":  "S4 acces sans accord",
+        "Attendu":  "403",
+        "Obtenu":  "403"
+    }
+]

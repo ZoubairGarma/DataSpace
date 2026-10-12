@@ -1,0 +1,63 @@
+﻿{
+    "participant":  "usine-2",
+    "count":  8,
+    "events":  [
+                   {
+                       "ts":  "2026-10-12T22:35:40.105095+00:00",
+                       "event":  "startup",
+                       "participant":  "usine-2",
+                       "usine":  "usine_2",
+                       "mode":  "builtin"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.031183+00:00",
+                       "event":  "catalog_served",
+                       "participant":  "usine-2",
+                       "consumer":  "usine_1"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.037133+00:00",
+                       "event":  "negotiation_finalized",
+                       "participant":  "usine-2",
+                       "consumer":  "usine_1",
+                       "asset":  "iot-usine-2-historical",
+                       "agreement":  "ag-7625f1da8ff2"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.121332+00:00",
+                       "event":  "transfer_completed",
+                       "participant":  "usine-2",
+                       "consumer":  "usine_1",
+                       "asset":  "iot-usine-2-historical",
+                       "agreement":  "ag-7625f1da8ff2",
+                       "bytes":  643580
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.164409+00:00",
+                       "event":  "catalog_served",
+                       "participant":  "usine-2",
+                       "consumer":  "usine_1"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.167737+00:00",
+                       "event":  "negotiation_terminated",
+                       "participant":  "usine-2",
+                       "consumer":  "usine_1",
+                       "asset":  "iot-usine-2-expired",
+                       "reason":  "politique policy-expired expiree le 2020-01-01T00:00:00Z"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.216385+00:00",
+                       "event":  "catalog_served",
+                       "participant":  "usine-2",
+                       "consumer":  "usine_1"
+                   },
+                   {
+                       "ts":  "2026-10-12T22:35:41.220654+00:00",
+                       "event":  "transfer_denied",
+                       "participant":  "usine-2",
+                       "agreement":  "ag-inexistant",
+                       "reason":  "accord ou token invalide"
+                   }
+               ]
+}
