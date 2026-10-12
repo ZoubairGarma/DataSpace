@@ -1,0 +1,7 @@
+# Namespace dédié au Industrial Data Space
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dataspace
+  labels:
+    app.kubernetes.io/part-of: dataspace
